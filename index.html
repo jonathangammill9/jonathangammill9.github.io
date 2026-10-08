@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jonathan Gammill | IT Automation &amp; Application Developer</title>
+<meta name="description" content="Jonathan Gammill — IT Automation Specialist and Application Developer at Asurepoint LLC. B.S. Information Technology, Digital Forensics, University of South Alabama.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-10 -19 20 22'%3E%3Cpath d='M0 0C-6 -5 -7.5 -13 -2 -16.5L0 -14.5L2 -16.5C7.5 -13 6 -5 0 0Z' fill='%23e9a9b9'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #1b1618; --surface: #3b2e33; --overlay: #86737a; --sub: #bba9a8; --fg: #ecdfd2;
+    --blossom: #f7dbe1; --sakura: #e9a9b9; --rose: #c9788d; --gold: #d6b583; --sage: #a9b48c;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", "DejaVu Sans Mono", monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: #000; color: var(--fg);
+    font: 15px/1.6 var(--mono); -webkit-font-smoothing: antialiased;
+    min-height: 100vh; overflow-x: hidden;
+  }
+  /* the banner's own smoke and film grain at the top of the page, dissolving to pure black on the way down */
+  .smoke { position: absolute; top: 0; left: 0; right: 0; height: 190vh; z-index: -2; pointer-events: none;
+    background: var(--bg) url(bg.svg) center top / cover no-repeat;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 38%, transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 0, #000 38%, transparent 100%); }
+  .vignette { position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.55) 100%); }
+  /* falling petals */
+  .petals { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+  .petals svg { position: absolute; top: -40px; width: 16px; height: 18px; opacity: 0;
+    animation: fall linear infinite; }
+  @keyframes fall {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
+    10% { opacity: .75; }
+    50% { transform: translate3d(60px, 55vh, 0) rotate(160deg); }
+    90% { opacity: .6; }
+    100% { transform: translate3d(-20px, 112vh, 0) rotate(340deg); opacity: 0; }
+  }
+
+  a { color: var(--sakura); text-decoration: none; }
+  a:hover, a:focus-visible { text-decoration: underline; }
+  :focus-visible { outline: 2px solid var(--sakura); outline-offset: 2px; }
+
+  .bar { position: sticky; top: 0; z-index: 5; margin: 8px; padding: 7px 12px;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px;
+    border: 1.5px solid rgba(201,120,141,.7); border-radius: 8px;
+    background: rgba(27,22,24,.86); backdrop-filter: blur(6px); }
+  .bar .tag { background: var(--sakura); color: var(--bg); font-weight: 700; border-radius: 5px; padding: 1px 7px; margin-right: 10px; }
+  .bar .who { color: var(--sub); white-space: nowrap; }
+  .bar > div:first-child { white-space: nowrap; }
+  .bar .focus { white-space: nowrap; }
+  .bar .focus i { color: var(--overlay); font-style: normal; }
+  .bar .clock { justify-self: end; color: var(--sub); white-space: nowrap; }
+  .sage { color: var(--sage); } .gold { color: var(--gold); } .sakura { color: var(--sakura); }
+  .rose { color: var(--rose); } .dim { color: var(--overlay); } .sub { color: var(--sub); }
+
+  main { max-width: 1216px; margin: 0 auto; padding: 0 8px 48px; }
+  .hero { overflow: hidden; border-radius: 4px; }
+  .hero img { display: block; width: 100%; height: auto; margin-top: -4.5%; }
+  .hero-text { display: none; padding: 20px 6px 8px; }
+  .hero-text h1 { margin: 6px 0; font-size: 30px; line-height: 1.15; letter-spacing: .04em; font-style: italic;
+    color: transparent; -webkit-text-stroke: 1.2px var(--sakura); text-shadow: 0 0 14px rgba(201,120,141,.55); }
+
+  .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 18px 0 22px; }
+  .btn { display: inline-flex; align-items: center; gap: 12px; padding: 5px 16px 5px 5px; color: var(--fg);
+    border: 1.5px solid var(--c); border-radius: 8px; background: var(--bg); font-size: 16px;
+    transition: transform .12s ease, box-shadow .12s ease; }
+  .btn b { background: var(--c); color: var(--bg); border-radius: 5px; padding: 3px 8px; font-size: 15px; }
+  .btn:hover, .btn:focus-visible { text-decoration: none; transform: translateY(-2px); box-shadow: 0 6px 18px -8px var(--c); }
+
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .win { border: 1.5px solid rgba(201,120,141,.7); border-radius: 8px; background: rgba(27,22,24,.35); padding: 16px 20px 18px; min-width: 0; }
+  .win.wide { grid-column: 1 / -1; }
+  .prompt { margin: 0 0 12px; font-size: 14px; font-weight: 400; overflow-wrap: anywhere; }
+  .prompt .u { color: var(--sage); font-weight: 700; } .prompt .p { color: var(--sakura); font-weight: 700; }
+
+  .job { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 4px 16px; padding: 10px 0; border-top: 1px dashed rgba(134,115,122,.35); }
+  .job:first-of-type { border-top: 0; padding-top: 0; }
+  .job .when { color: var(--gold); font-size: 14px; }
+  .job h3 { margin: 0; font-size: 15px; }
+  .job h3 span { color: var(--sub); font-weight: 400; }
+  .job.now h3 { color: var(--sage); }
+  ul { margin: 6px 0 0; padding-left: 18px; color: var(--sub); font-size: 14px; }
+  li::marker { color: var(--rose); }
+
+  .proj { padding: 12px 0; border-top: 1px dashed rgba(134,115,122,.35); }
+  .proj:first-of-type { border-top: 0; padding-top: 0; }
+  .proj h3 { margin: 0 0 4px; font-size: 15px; color: var(--sakura); }
+  .proj h3 small { color: var(--overlay); font-weight: 400; font-size: 13px; margin-right: 10px; }
+  .proj p { margin: 0 0 8px; color: var(--sub); font-size: 14px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips span { border: 1px solid rgba(134,115,122,.6); border-radius: 5px; padding: 0 7px; font-size: 13px; color: var(--fg); }
+  details { margin-top: 10px; font-size: 14px; }
+  summary { cursor: pointer; color: var(--gold); }
+  details dl { margin: 8px 0 0; display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 2px 14px; }
+  dt { color: var(--sakura); } dd { margin: 0; color: var(--sub); }
+
+  .ls h3 { margin: 12px 0 2px; font-size: 14px; color: var(--sakura); }
+  .ls h3:first-of-type { margin-top: 0; }
+  .ls p { margin: 0; font-size: 14px; }
+  .kv { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 4px 14px; margin: 0; font-size: 14px; }
+  .end { margin: 22px 6px 0; font-size: 14px; }
+  .cursor { display: inline-block; width: 9px; height: 17px; background: var(--sakura); vertical-align: -3px; animation: blink 1.2s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .hint { color: var(--overlay); font-size: 13px; text-align: center; margin: 0 0 18px; }
+
+  @media (max-width: 820px) {
+    .bar { grid-template-columns: 1fr auto; } .bar .focus, .bar .place { display: none; }
+    .hero img { display: none; } .hero-text { display: block; }
+    .grid { grid-template-columns: minmax(0, 1fr); }
+    .job { grid-template-columns: minmax(0, 1fr); }
+    details dl { grid-template-columns: minmax(0, 1fr); } dd { margin-bottom: 6px; }
+    .hint { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .petals svg, .cursor { animation: none; } .petals { display: none; } html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="smoke" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<div class="petals" aria-hidden="true" id="petals"></div>
+
+<header class="bar">
+  <div><span class="tag">[0]</span><span class="who">jonathan@gammill: ~</span></div>
+  <div class="focus"><span class="sage">AUTOMATION</span> <i>|</i> <span class="gold">APP DEV</span> <i>|</i> <span class="sakura">DIGITAL FORENSICS</span></div>
+  <div class="clock"><span class="place">Ocean Springs, MS · </span><span id="clock"></span></div>
+</header>
+
+<main>
+  <section class="hero">
+    <img src="github-banner.svg" width="1200" height="446" alt="Jonathan Gammill — IT Automation Specialist and Application Developer at Asurepoint LLC">
+    <div class="hero-text">
+      <div class="prompt"><span class="u">jonathan@gammill</span>:<span class="p">/</span>$ whoami</div>
+      <h1>JONATHAN GAMMILL</h1>
+      <div>IT Automation Specialist / Application Developer @ Asurepoint LLC</div>
+      <div class="sub">B.S. Information Technology, Digital Forensics @ South Alabama</div>
+    </div>
+  </section>
+
+  <nav class="links" aria-label="Links">
+    <a class="btn" style="--c: var(--sakura)" data-key="1" href="mailto:jonathan.gammill9@gmail.com"><b>[1]</b>contact</a>
+    <a class="btn" style="--c: var(--gold)" data-key="2" href="resume.pdf"><b>[2]</b>resume.pdf</a>
+    <a class="btn" style="--c: var(--sage)" data-key="3" href="https://www.linkedin.com/in/jonathan-gammill-69130a293" rel="noopener"><b>[3]</b>linkedin</a>
+    <a class="btn" style="--c: var(--rose)" data-key="4" href="https://github.com/jonathangammill9" rel="noopener"><b>[4]</b>github</a>
+  </nav>
+  <p class="hint">press 1–4 to open a link</p>
+
+  <div class="grid">
+    <section class="win wide" id="experience">
+      <h2 class="prompt"><span class="u">jonathan@gammill</span>:<span class="p">/var/log</span>$ cat experience.log --verbose</h2>
+      <article class="job now">
+        <div class="when">2026.06 – now</div>
+        <div>
+          <h3>IT Automation Specialist <span>· Asurepoint LLC · Plano, TX</span></h3>
+          <ul>
+            <li>Write and maintain automation scripts in Python, Bash, and PowerShell to eliminate manual system administration tasks.</li>
+            <li>Design automated ETL processes to extract, transform, and move data between disparate systems.</li>
+            <li>Integrate software platforms via API keys and tokens, and configure webhooks for real-time cross-system actions.</li>
+            <li>Build secure digital pipelines enabling legacy on-premise systems to communicate seamlessly with modern cloud applications.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="job now">
+        <div class="when">2026.06 – now</div>
+        <div>
+          <h3>Application Developer <span>· Asurepoint LLC · Plano, TX</span></h3>
+          <ul>
+            <li>Design, develop, and maintain software applications in C#, Java, and Python to meet business and user requirements.</li>
+            <li>Write clean, well-documented code and debug, test, and troubleshoot applications for performance and reliability.</li>
+            <li>Collaborate with team members and stakeholders to gather requirements and translate them into technical solutions.</li>
+            <li>Enhance existing applications by integrating new features and resolving software defects.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="job">
+        <div class="when">2024 summer</div>
+        <div>
+          <h3>IT Data Management Intern <span>· Mississippi Department of Marine Resources · Biloxi, MS</span></h3>
+          <ul>
+            <li>Gathered statistical data and organized legal records from archived case files.</li>
+            <li>Produced geospatial maps from satellite imagery and state site data using ArcGIS software.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="job">
+        <div class="when">2019 – 2022</div>
+        <div>
+          <h3>Plumbing Apprentice <span>· H&amp;H Plumbing · Ocean Springs, MS</span></h3>
+          <ul>
+            <li>Installed piping systems (PVC, copper, PEX, cast iron) and fixtures including toilets, sinks, faucets, and water heaters.</li>
+            <li>Secured and prepared pipes for cutting, threading, and soldering, and applied sealants, tape, and fittings.</li>
+            <li>Tested systems for leaks and proper pressure to ensure code compliance and reliability.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <section class="win wide" id="projects">
+      <h2 class="prompt"><span class="u">jonathan@gammill</span>:<span class="p">/opt</span>$ ls -la</h2>
+      <article class="proj">
+        <h3><small>drwxr-xr-x</small>multi-agent-ai/</h3>
+        <p>Senior capstone with Fivos Health: a multi-agent AI system that harvests medical device data from the web and validates it against the FDA GUDID database, using a modular "Collect and Compare" workflow that learns from human review.</p>
+        <div class="chips"><span>Python 3.13</span><span>FastAPI</span><span>Playwright</span><span>BeautifulSoup4</span><span>MongoDB Atlas</span><span>Ollama</span><span>Docker Compose</span><span>bcrypt</span><span>OWASP ZAP</span></div>
+        <details>
+          <summary>$ cat stack.txt</summary>
+          <dl>
+            <dt>language</dt><dd>Python 3.13</dd>
+            <dt>web</dt><dd>FastAPI with Jinja2 templates</dd>
+            <dt>browser automation</dt><dd>Playwright running on asyncio</dd>
+            <dt>html parsing</dt><dd>BeautifulSoup4 with the lxml parser</dd>
+            <dt>ai extraction</dt><dd>Gemma 4 E4B, Mistral Large, Llama 3.3 70B, Llama 3.1 8B</dd>
+            <dt>database</dt><dd>MongoDB Atlas</dd>
+            <dt>validation source</dt><dd>FDA GUDID API v3</dd>
+            <dt>authentication</dt><dd>bcrypt at work factor 12, plus a Have I Been Pwned check on new passwords</dd>
+            <dt>containers</dt><dd>Docker Compose running the app, Ollama, and an init sidecar, with an opt-in GPU override</dd>
+            <dt>dev tools</dt><dd>VS Code, GitHub, OWASP ZAP</dd>
+          </dl>
+        </details>
+      </article>
+      <article class="proj">
+        <h3><small>drwxr-xr-x</small>cyber-carver/</h3>
+        <p>Cyber Carver: a data-carving engine with its own browser-based GUI, launched from a link when the app is run with Python, that parses video, data, and configuration files from IoT devices (Ring doorbell cameras, smart home hubs). Disk images extracted from storage media with Kali Linux and FTK Imager are uploaded into the engine, carved files are assigned forensic hashes, and carved files, archives, and disk images are stored in a local PostgreSQL database. Containerized with Docker so it runs on anyone's OS, not just the local host.</p>
+        <div class="chips"><span>Python 3.13</span><span>JavaScript</span><span>HTML</span><span>hashing libraries</span><span>PostgreSQL</span><span>Docker</span><span>Kali Linux</span><span>FTK Imager</span></div>
+      </article>
+      <article class="proj">
+        <h3><small>drwxr-xr-x</small>portal-resilience/</h3>
+        <p>Consolidated Asurepoint Insurance Group's fragmented toolset (Google Sheets, Apps Script, GoHighLevel, EnrollHere) into one HIPAA-compliant web portal with role-based access, and hardened the data layer with encrypted, immutable backups.</p>
+        <div class="chips"><span>PostgreSQL</span><span>AWS S3 (versioning, Object Lock)</span><span>Render</span></div>
+      </article>
+      <article class="proj">
+        <h3><small>drwxr-xr-x</small>app-dev-coursework/</h3>
+        <p>Applications built across intermediate and advanced application development, plus Linux forensics work inspecting hidden files and decrypting disk partitions on virtual machines.</p>
+        <div class="chips"><span>C#</span><span>Java</span><span>Bash</span><span>Linux</span></div>
+      </article>
+    </section>
+
+    <section class="win ls" id="skills">
+      <h2 class="prompt"><span class="u">jonathan@gammill</span>:<span class="p">/usr</span>$ ls bin lib/forensics /mnt/cloud share/systems</h2>
+      <h3>bin:</h3><p class="sage">Python · JavaScript · C# · Java · Bash · PowerShell</p>
+      <h3>lib/forensics:</h3><p>FTK Imager · Autopsy · EnCase · Wireshark · hex editors · data/file carving · Kali Linux</p>
+      <h3>/mnt/cloud:</h3><p class="gold">AWS · Google Cloud · PostgreSQL · MongoDB · data migration · HIPAA compliance</p>
+      <h3>share/systems:</h3><p class="sub">Linux · Windows/NTFS · macOS · VM environments · GitHub · ArcGIS</p>
+    </section>
+
+    <section class="win" id="education">
+      <h2 class="prompt"><span class="u">jonathan@gammill</span>:<span class="p">/etc</span>$ cat education</h2>
+      <dl class="kv">
+        <dt>degree</dt><dd>B.S. Information Technology</dd>
+        <dt>focus</dt><dd>Digital Forensics Concentration</dd>
+        <dt>school</dt><dd>University of South Alabama</dd>
+        <dt>class</dt><dd>May 2026</dd>
+      </dl>
+      <h2 class="prompt" style="margin-top:18px"><span class="u">jonathan@gammill</span>:<span class="p">~</span>$ history | grep honors</h2>
+      <dl class="kv">
+        <dt>dean's list</dt><dd>Spring 2025 – Spring 2026</dd>
+        <dt>member</dt><dd>The National Society of Leadership and Success (NSLS)</dd>
+      </dl>
+    </section>
+  </div>
+
+  <p class="end"><span class="sage"><b>jonathan@gammill</b></span>:<span class="sakura"><b>/</b></span>$ <span class="cursor" aria-hidden="true"></span></p>
+</main>
+
+<script>
+  // live clock in the status bar
+  const clock = document.getElementById("clock");
+  const tick = () => { clock.textContent = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }); };
+  tick(); setInterval(tick, 1000);
+
+  // number keys open the matching link button
+  document.addEventListener("keydown", (ev) => {
+    if (ev.metaKey || ev.ctrlKey || ev.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(ev.target.tagName)) return;
+    const link = document.querySelector(`.btn[data-key="${ev.key}"]`);
+    if (link) link.click();
+  });
+
+  // falling petals
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const box = document.getElementById("petals");
+    const petal = '<svg viewBox="-9 -18 18 19"><defs><linearGradient id="pg" x1=".5" y1="1" x2=".5" y2="0"><stop offset="0" stop-color="#c9788d"/><stop offset=".45" stop-color="#e9a9b9"/><stop offset="1" stop-color="#f7dbe1"/></linearGradient></defs><path d="M0 0C-6 -5 -7.5 -13 -2 -16.5L0 -14.5L2 -16.5C7.5 -13 6 -5 0 0Z" fill="url(#pg)"/></svg>';
+    for (let i = 0; i < 14; i++) {
+      box.insertAdjacentHTML("beforeend", petal);
+      const el = box.lastElementChild, dur = 11 + (i * 3.7) % 9, size = 10 + (i * 5) % 9;
+      el.style.left = ((i * 37) % 100) + "%";
+      el.style.width = size + "px"; el.style.height = size * 1.1 + "px";
+      el.style.animationDuration = dur + "s";
+      el.style.animationDelay = -((i * 2.9) % dur) + "s";
+    }
+  }
+</script>
+</body>
+</html>
